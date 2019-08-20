@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Button from '@material-ui/core/Button';
 import api from '../../services/api';
+import './styles.css';
 
 class Crud extends Component {
     constructor(props) {
@@ -43,6 +54,14 @@ class Crud extends Component {
             studentAux.name = event.target.value;
         else if (event.target.name === "address")
             studentAux.address = event.target.value;
+        else if (event.target.name === "picture"){
+            let files = event.target.files;
+            let reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = (event) => {
+                studentAux.picture = event.target.result;
+            };
+        }
         this.setState({newStudent: studentAux});
     }
 
@@ -56,33 +75,95 @@ class Crud extends Component {
 
     render() {
         return (
-            <div className="App">
-                <Link to="/"> Home </Link>
+            <div className="Crud">
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link className="homeLink" to="/" color="inherit">
+                        Home
+                    </Link>
+                    <Typography color="textPrimary">Students</Typography>
+                </Breadcrumbs>
                 <div align="center">
                     <h2>New Student</h2>
                     <form onSubmit={this.handleSubmit}>
                         <div>
-                            <label>name</label>
-                            <input type="text" name="name" onChange={this.handleChange}/>
+                            <TextField
+                                id="name"
+                                label="Name"
+                                name="name"
+                                className="nameTextField"
+                                onChange={this.handleChange}
+                                margin="normal"
+                            />
                         </div>
                         <div>
-                            <label>address</label>
-                            <input type="text" name="address" onChange={this.handleChange}/>
+                            <TextField
+                                id="address"
+                                label="Address"
+                                name="address"
+                                className="addressTextField"
+                                onChange={this.handleChange}
+                                margin="normal"
+                            />
                         </div>
-                        <div>
-                            <button> Create </button>
+                        <input
+                            accept="image/jpg"
+                            className="pictureButton"
+                            name="picture"
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            onChange={this.handleChange}
+                            multiple
+                            type="file"
+                        />
+                        <label htmlFor="raised-button-file">
+                            <Button variant="contained" component="span" className="pictureButton_">
+                                Upload picture
+                            </Button>
+                        </label>
+                        <div className="submitButton">
+                            <Button type="submit" variant="contained" color="primary"> Create Student </Button>
                         </div>
                     </form>
                 </div>
-                <div align="center">
-                    <h1>Students</h1>
-                    {this.state.students.map(student =>
-                        <div key={student.id}>
-                            {student.name} {student.address}
-                            <Link to={`/students/${student.id}`}>Show</Link>
-                            <button onClick={() =>this.deleteStudent(student.id)}>Delete</button>
-                        </div>
-                    )}
+                <div className="studentSection" align="center">
+                    <h2 >Students</h2>
+                        <List className="studentList">
+                        {this.state.students.map(student =>
+                            <div key={student.id}>
+                                    <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={student.name}
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    color="textPrimary"
+                                                >
+                                                    {student.address}
+                                                </Typography>
+                                            </React.Fragment>
+                                        }
+                                    />
+
+                                    <Link className="showButton" to={`/students/${student.id}`}>
+                                        <Button variant="contained">Show</Button>
+                                    </Link>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        className="deleteButton"
+                                        onClick={() =>this.deleteStudent(student.id)}>
+                                        Delete
+                                    </Button>
+                                    </ListItem>
+                                <Divider variant="inset" component="li" />
+                            </div>
+                            )}
+                            </List>
                 </div>
             </div>
         );

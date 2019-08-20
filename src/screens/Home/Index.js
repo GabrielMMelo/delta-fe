@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import './styles.css';
+import logo from '../../logo.svg';
 
-// TODO: Mudar BG
-// TODO: Alterar título
 
 class Home extends Component{
     state = {students: []}
@@ -12,11 +13,16 @@ class Home extends Component{
 
     render() {
         return (
-            <div>
-                <h2 align="center">Tela inicial </h2>
+            <div className="home">
                 <div align="center">
+                    <div className="imageDiv">
+                        <img src={logo} alt="DeltaInova's logo" />
+                    </div>
+                    <h2 className="title">Controle de Alunos</h2>
                     <Link to="/students" align="center">
-                        Ir para CRUD
+                    <Button variant="contained" color="primary">
+                        Acessar CRUD
+                    </Button>
                     </Link>
                 </div>
             </div>

@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import api from '../../services/api';
 import { Link } from 'react-router-dom';
+import './styles.css';
 
 export default class Student extends Component {
     constructor(props) {
@@ -31,6 +36,14 @@ export default class Student extends Component {
             studentAux.name = event.target.value;
         else if (event.target.name === "address")
             studentAux.address = event.target.value;
+        else if (event.target.name === "picture"){
+            let files = event.target.files;
+            let reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = (event) => {
+                studentAux.picture = event.target.result;
+            };
+        }
         this.setState({student: studentAux});
     }
 
@@ -42,22 +55,60 @@ export default class Student extends Component {
     render() {
         const { student } = this.state;
 
-        //<h1>{student.picture}</h1>
         return (
             <div align="center">
-                <Link to="/students">Voltar</Link>
+
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link className="homeLink" to="/" color="inherit">
+                        Home
+                    </Link>
+                    <Link className="studentLink" to="/students" color="inherit">
+                        Students
+                    </Link>
+                    <Typography color="textPrimary">{student.name}</Typography>
+                </Breadcrumbs>
+
                 <form onSubmit={this.handleSubmit}>
-                <div>
-                    <label>Name</label>
-                    <input type="text" name="name" value={student.name} onChange={this.handleChange}/>
-                </div>
-                <div>
-                    <label>Address</label>
-                    <input type="text" name="address" value={student.address} onChange={this.handleChange}/>
-                </div>
-                <div>
-                    <button> Update </button>
-                </div>
+                    <div>
+                        <TextField
+                            id="name"
+                            label="Name"
+                            name="name"
+                            value={student.name}
+                            className="nameTextField"
+                            onChange={this.handleChange}
+                            margin="normal"
+                        />
+                    </div>
+                    <div>
+                        <TextField
+                            id="address"
+                            label="Address"
+                            name="address"
+                            value={student.address}
+                            className="addressTextField"
+                            onChange={this.handleChange}
+                            margin="normal"
+                        />
+                    </div>
+                    <input
+                        accept="image/jpg"
+                        className="pictureButton"
+                        name="picture"
+                        style={{ display: 'none' }}
+                        id="raised-button-file"
+                        onChange={this.handleChange}
+                        multiple
+                        type="file"
+                    />
+                    <label htmlFor="raised-button-file">
+                        <Button variant="contained" component="span" className="pictureButton_">
+                            Upload picture
+                        </Button>
+                    </label>
+                    <div className="submitButton">
+                        <Button type="submit" variant="contained" color="primary"> Update Student </Button>
+                    </div>
                 </form>
             </div>
         );
