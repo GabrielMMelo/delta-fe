@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import api from '../../services/api';
+
+import Resizer from 'react-image-file-resizer';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
@@ -38,17 +41,26 @@ export default class Student extends Component {
             studentAux.address = event.target.value;
         else if (event.target.name === "picture"){
             let files = event.target.files;
-            let reader = new FileReader();
-            reader.readAsDataURL(files[0]);
-            reader.onload = (event) => {
-                studentAux.picture = event.target.result;
-            };
+            Resizer.imageFileResizer(
+                event.target.files[0],
+                100,
+                100,
+                'JPG',
+                100,
+                0,
+                uri => {
+                    console.log(uri);
+                    studentAux.picture = uri;
+                },
+                'base64'
+            );
         }
         this.setState({student: studentAux});
     }
 
     async handleSubmit(event) {
         event.preventDefault();
+        console.log(this.state.student.picture);
         const response = await api.put(`/students/${this.state.id}`, this.state.student);
     }
 
@@ -57,7 +69,6 @@ export default class Student extends Component {
 
         return (
             <div align="center">
-
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link className="homeLink" to="/" color="inherit">
                         Home
@@ -91,6 +102,11 @@ export default class Student extends Component {
                             margin="normal"
                         />
                     </div>
+
+                    <div>
+                        <img className="studentPicture" src={student.picture} alt={`${student.name}'s picture`}/>
+                    </div>
+
                     <input
                         accept="image/jpg"
                         className="pictureButton"

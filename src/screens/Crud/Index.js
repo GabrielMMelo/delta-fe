@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,7 +10,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Button from '@material-ui/core/Button';
+
+import { Link } from 'react-router-dom';
+import Resizer from 'react-image-file-resizer';
 import api from '../../services/api';
+
 import './styles.css';
 
 class Crud extends Component {
@@ -56,11 +60,19 @@ class Crud extends Component {
             studentAux.address = event.target.value;
         else if (event.target.name === "picture"){
             let files = event.target.files;
-            let reader = new FileReader();
-            reader.readAsDataURL(files[0]);
-            reader.onload = (event) => {
-                studentAux.picture = event.target.result;
-            };
+            Resizer.imageFileResizer(
+                event.target.files[0],
+                100,
+                100,
+                'JPG',
+                100,
+                0,
+                uri => {
+                    console.log(uri);
+                    studentAux.picture = uri;
+                },
+                'base64'
+            );
         }
         this.setState({newStudent: studentAux});
     }
@@ -132,7 +144,7 @@ class Crud extends Component {
                             <div key={student.id}>
                                     <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
-                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                                    <Avatar alt="Remy Sharp" src={student.picture} />
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary={student.name}
