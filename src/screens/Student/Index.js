@@ -15,8 +15,7 @@ export default class Student extends Component {
             name: '',
             address: '',
             picture: ''
-        },
-        id: -1
+        }, id: -1
     };
 
     async componentDidMount() {
