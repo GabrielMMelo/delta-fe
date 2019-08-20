@@ -82,8 +82,8 @@ class Crud extends Component {
                     </Link>
                     <Typography color="textPrimary">Students</Typography>
                 </Breadcrumbs>
-                <div align="center">
-                    <h2>New Student</h2>
+                <div className="newStudentSection" align="center">
+                    <h2 className="title">New Student</h2>
                     <form onSubmit={this.handleSubmit}>
                         <div>
                             <TextField
@@ -126,7 +126,7 @@ class Crud extends Component {
                     </form>
                 </div>
                 <div className="studentSection" align="center">
-                    <h2 >Students</h2>
+                    <h2 className="title">Students</h2>
                         <List className="studentList">
                         {this.state.students.map(student =>
                             <div key={student.id}>

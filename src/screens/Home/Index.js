@@ -18,10 +18,10 @@ class Home extends Component{
                     <div className="imageDiv">
                         <img src={logo} alt="DeltaInova's logo" />
                     </div>
-                    <h2 className="title">Controle de Alunos</h2>
+                    <h2 className="title">Student management</h2>
                     <Link to="/students" align="center">
                     <Button variant="contained" color="primary">
-                        Acessar CRUD
+                        Access CRUD
                     </Button>
                     </Link>
                 </div>
