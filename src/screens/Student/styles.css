@@ -1,0 +1,11 @@
+.studentLink {
+    color: blue;
+    text-decoration: none;
+}
+
+.studentPicture {
+    max-width:300px;
+    height: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

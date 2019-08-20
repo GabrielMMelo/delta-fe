@@ -1,0 +1,33 @@
+.submitButton {
+    margin-top: 1rem;
+}
+
+.studentList {
+    max-width: 70%;
+    margin-bottom: 2rem;
+}
+
+.studentSection {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    background-color: rgba(22, 116, 172, 0.3);
+}
+
+.studentSection .showButton {
+    margin-right: 0.5rem;
+}
+
+.studentSection .title {
+    color: white;
+}
+
+.newStudentSection .title {
+    color: white;
+}
+
+.homeLink {
+    margin-left: 1rem;
+    color: blue;
+    text-decoration: none;
+}
