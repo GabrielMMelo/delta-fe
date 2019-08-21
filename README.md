@@ -17,7 +17,7 @@ npm i
 ## Execução
 
 ```
-npm run dev
+npm run start
 ```
 
 > porta 8080, por padrão
